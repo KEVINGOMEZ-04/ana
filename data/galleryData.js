@@ -3,7 +3,7 @@
 
 export const COLLECTIONS = [
   { key: 'RenovacionDeVotos', title: 'Renovación de votos', description: 'Solo me acuerdo de las caras que hicimos y eso que es gracias a los videos jajaja.' },
-  { key: 'Charla', title: 'Tu rancho Parte 1', description: 'Se podria decir que habian mejores formas de pasar el tiempo, pero estar ahi hablando contigo, eso, al menos, para mi era perfecto.' },
+  { key: 'Charla', title: 'Tu rancho Parte 1', description: 'Se podría decir que había mejores formas de pasar el tiempo, pero estar ahí hablando contigo... eso, al menos para mí, era perfecto.' },
   { key: 'Salida', title: 'Tu rancho Parte 2', description: 'Nunca habia sentido lo que senti ese dia, que peluches tan comodos ome.' },
   { key: 'Feria2022', title: 'Ferias 2022', description: 'Esa "Rueda de la fortuna" estaba amarrada con una piola, partes oxidadas, con razon le dicen rueda de la fortuna' },
   { key: 'FresasConChocolate', title: 'Pesimo servicio', description: 'Ey me quede con las ganas de comerlas.' },
