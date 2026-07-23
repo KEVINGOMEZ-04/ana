@@ -14,7 +14,7 @@ export const COLLECTIONS = [
   { key: 'Karina', title: 'Karina', description: 'Al final la persona mas importante de este dia' }
 ];
 
-const ASSETS_PATH = '/assets/images/chapter3/';
+const ASSETS_PATH = 'assets/images/chapter3/';
 
 const ASSET_MANIFEST = {
   RenovacionDeVotos: [
