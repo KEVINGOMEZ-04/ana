@@ -140,7 +140,7 @@ export const CHAPTER3 = {
   ],
 
   final: {
-    image: '/assets/images/memoria-001.jpg',
+    image: 'assets/images/memoria-001.jpg',
     lines: [
       'Después de todo este tiempo...',
       'aún sigues siendo la persona con la que prefiero compartir los planes que no salen como esperaba.'
