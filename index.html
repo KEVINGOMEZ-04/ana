@@ -154,22 +154,17 @@
       const now = new Date();
       const diff = Math.max(0, TARGET_DATE - now);
       if(diff <= 0){
-        // time reached -> grant access and navigate
+        // time reached -> grant access but keep the intro visible until the user continues
         try{ localStorage.setItem('accessGranted','true'); }catch(e){}
         $('days').textContent = '00';
         $('hours').textContent = '00';
         $('minutes').textContent = '00';
         $('seconds').textContent = '00';
         clearInterval(window._countdownTimer);
-        // Small delay to allow UI update before redirecting
-        setTimeout(()=>{
-          if(!DEV_SKIP_REDIRECT){
-            window.location.href = ROUTES.chapter1;
-          } else {
-            // In dev mode, just log and keep the page for inspection
-            console.info('DEV: target date reached — accessGranted set but redirect suppressed (dev mode)');
-          }
-        }, 120);
+        const countdownMessage = document.querySelector('.countdown-message');
+        if(countdownMessage){
+          countdownMessage.textContent = 'Ya es el momento. Presiona continuar para seguir.';
+        }
         return;
       }
       const totalSeconds = Math.floor(diff/1000);
@@ -301,12 +296,7 @@
       // Respect previously granted access (but allow dev override)
       try{
         if(localStorage.getItem('accessGranted') === 'true') {
-          if(!DEV_SKIP_REDIRECT){
-            // access was granted previously — navigate immediately
-            window.location.href = ROUTES.chapter1;
-          } else {
-            console.info('DEV: accessGranted present but redirect suppressed (dev mode)');
-          }
+          console.info('INFO: accessGranted present — el índice permanece visible hasta que el usuario continúe.');
         }
       }catch(e){}
     });
