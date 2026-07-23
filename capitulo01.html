@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Capítulo I — Una conversación muy mal entendida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  <link rel="stylesheet" href="./css/chapter01.css">
+</head>
+<body class="chapter-container">
+  <main id="chapter-root">
+    <!-- SCENE 1: Opening black screen with lines -->
+    <section id="scene-1" class="scene dark-scene">
+      <div class="scene-inner">
+        <div id="scene-1-line" class="scene-line"></div>
+      </div>
+    </section>
+
+    <!-- SCENE 2: File card / expediente -->
+    <section id="scene-2" class="scene file-scene hidden">
+      <div class="file-card glass">
+        <div class="file-header">RECUERDO - NUESTRA PRIMERA CONVERSACIÓN <span class="file-id">#0001</span></div>
+        <div class="file-meta">
+          <div><strong>Estado:</strong> Reconstruido parcialmente</div>
+          <div><strong>Lugar:</strong> 📍 Iglesia de La María</div>
+          <div><strong>Fecha:</strong> 2018–2019</div>
+          <div><strong>Nivel de precisión:</strong> 65%</div>
+        </div>
+        <p class="file-note">Estado: Conversación recuperada parcialmente.</p>
+        <div class="file-actions">
+          <button id="btn-reconstruct" class="btn-primary">Reconstruir recuerdo</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCENE 3/4: Dialogue area (script style) -->
+    <section id="scene-3" class="scene dialog-scene hidden">
+      <div class="dialog-wrap glass">
+        <div id="dialog-speaker" class="dialog-speaker"></div>
+        <div id="dialog-text" class="dialog-text"></div>
+      </div>
+    </section>
+
+    <!-- SCENE 5: Analysis -->
+    <section id="scene-5" class="scene analysis-scene hidden">
+      <div class="analysis-card glass">
+        <h3>Resultado del primer encuentro</h3>
+        <p class="analysis-intro">No fue perfecto, pero dejó una pequeña puerta abierta para lo que vendría después.</p>
+        <ul class="analysis-list">
+          <li><strong>Comunicación</strong><span class="score">0/10</span></li>
+          <li><strong>Confusión</strong><span class="score">100/10</span></li>
+          <li><strong>Vergüenza</strong><span class="score">Muchísima</span></li>
+          <li><strong>Inicio de amistad</strong><span id="friendship" class="score">Pendiente...</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SCENE 6: Closing phrase and continue button -->
+    <section id="scene-6" class="scene closing-scene hidden">
+      <div class="closing-inner">
+        <span class="chapter-index">Archivo 0001 · Reconstruido</span>
+        <p class="closing-line">Ese día no nació una gran amistad.</p>
+        <p class="closing-line">Solo fue una conversación muy extraña.</p>
+        <p class="closing-line">Pero...</p>
+        <p class="closing-line">Sin que ninguno de los dos lo supiera...</p>
+        <p class="closing-line highlight">...la historia apenas acababa de empezar.</p>
+        <p class="closing-note">A veces las conexiones más bonitas no empiezan con una gran escena. Empiezan con una conversación rara y una razón para volver a hablar.</p>
+        <div class="continue-wrap">
+          <button id="btn-continue" class="btn-primary">Continuar al Capítulo II →</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Música de fondo -->
+  <audio id="bg-audio" preload="auto" loop>
+    <source src="./assets/music/backgrounds/background.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <button id="music-btn" aria-label="Reproducir música">▶</button>
+
+  <script>
+  (function(){
+    const audio = document.getElementById('bg-audio');
+    const btn = document.getElementById('music-btn');
+    // Volumen por defecto (puedes ajustar entre 0.0 y 1.0)
+    audio.volume = 0.14;
+    // Loop ya establecido con el atributo loop, pero por compatibilidad añadimos listener
+    audio.addEventListener('ended', ()=>{
+      // por seguridad, reanudar al terminar
+      try{ audio.currentTime = 0; audio.play().catch(()=>{}); }catch(e){}
+    });
+
+    function setPlayingUI(isPlaying){
+      if(isPlaying){ btn.classList.add('playing'); btn.textContent = '❚❚'; }
+      else { btn.classList.remove('playing'); btn.textContent = '▶'; }
+    }
+
+    // Intentar autoplay al cargar (muchos navegadores lo bloquearán si no hubo interacción)
+    function tryAutoplay(){
+      audio.play().then(()=>{
+        setPlayingUI(true);
+      }).catch((err)=>{
+        // Autoplay bloqueado: deja el control visible para que el usuario pulse
+        setPlayingUI(false);
+        // aumentar la visibilidad del botón (breve pulso)
+        btn.classList.add('paused');
+        setTimeout(()=>btn.classList.remove('paused'), 900);
+      });
+    }
+
+    // Toggle manual
+    btn.addEventListener('click', ()=>{
+      if(audio.paused){
+        audio.play().then(()=> setPlayingUI(true)).catch(()=> setPlayingUI(false));
+      } else {
+        audio.pause(); setPlayingUI(false);
+      }
+    });
+
+    // Iniciar intento de autoplay pronto — después de DOMContentLoaded
+    if(document.readyState === 'complete' || document.readyState === 'interactive'){
+      // pequeña demora para que la página termine de entrar
+      setTimeout(tryAutoplay, 250);
+    } else {
+      document.addEventListener('DOMContentLoaded', ()=> setTimeout(tryAutoplay, 250));
+    }
+
+    // Si el usuario ya permitió audio antes (persistencia), intentar reproducir
+    try{
+      if(localStorage.getItem('musicAllowed') === 'true'){
+        audio.play().then(()=> setPlayingUI(true)).catch(()=>{});
+      }
+    }catch(e){}
+
+    // Guardar preferencia cuando el usuario reproduce manualmente
+    audio.addEventListener('play', ()=>{
+      try{ localStorage.setItem('musicAllowed','true'); }catch(e){}
+      setPlayingUI(true);
+    });
+    audio.addEventListener('pause', ()=> setPlayingUI(false));
+  })();
+  </script>
+
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/capitulo01.js"></script>
+</body>
+</html>

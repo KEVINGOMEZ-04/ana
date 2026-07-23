@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capítulo III — Todo lo que veo cuando te miro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  <link rel="stylesheet" href="./css/chapter03.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+  <audio id="typing-effect" preload="auto" playsinline webkit-playsinline>
+    <source src="./assets/music/efect.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+  <div id="gallery-overlay" class="gallery-overlay"></div>
+
+  <section id="scene-transition" class="transition-screen">
+    <div class="transition-text" id="transition-text"></div>
+  </section>
+
+  <main id="chapter-root" class="chapter03-container">
+    <section class="chapter-intro hidden">
+      <span class="chapter-index">CAPÍTULO III</span>
+      <h1 class="elegant-title">Todo lo que veo cuando te miro</h1>
+      <p class="subtitle">"Después de tantos recuerdos...<br>creo que es momento de hablar de la persona que siempre estuvo en ellos."</p>
+    </section>
+
+    <section class="gallery-section hidden">
+      <div class="section-title">Lo que el tiempo decidió conservar</div>
+      <p class="section-subtitle">"Muchas fotografías se perdieron cuando me robaron el teléfono. Por suerte, el tiempo fue generoso y todavía nos dejó estas para volver a recorrer algunos de nuestros mejores momentos."</p>
+      <div id="gallery-grid" class="gallery-grid"></div>
+    </section>
+
+    <section id="time-section" class="time-section hidden">
+      <div class="section-title">El tiempo</div>
+      <p class="section-subtitle">¿Alguna vez te has detenido a pensar en todo el tiempo que llevas existiendo?</p>
+      <div class="time-intro" id="time-intro"></div>
+      <div class="time-map" id="time-map"></div>
+      <div class="time-summary" id="time-summary"></div>
+      <div class="time-footer" id="time-footer"></div>
+    </section>
+
+    <section id="universe-section" class="universe-section hidden">
+      <div class="section-title">Las pequeñas cosas que también hablan de ti</div>
+      <p class="section-subtitle">Un universo hecho de música, detalles y momentos que solo yo reconozco.</p>
+
+      <div class="music-section">
+        <div class="music-grid" id="music-grid"></div>
+      </div>
+
+      <div class="discover-section">
+        <div class="discover-grid" id="discover-grid"></div>
+      </div>
+
+
+    <section class="phrases-section hidden">
+      <div class="section-title">Lo que probablemente nunca te dije</div>
+      <div id="phrases-list" class="phrases-list"></div>
+    </section>
+
+    <section id="words-section" class="words-section hidden">
+      <div class="section-title">Palabras</div>
+      <p class="section-subtitle">Haz clic en una palabra para descubrir por qué forma parte de ti.</p>
+      <div id="words-grid" class="words-grid"></div>
+      <div id="word-detail" class="word-detail"></div>
+    </section>
+
+    <section class="final-section hidden">
+      <div class="final-empty"></div>
+      <img id="final-image" class="final-image" src="" alt="">
+      <div id="final-copy" class="final-copy">
+        <p id="final-text"></p>
+        <button id="btn-open-private-letter" class="btn-primary" type="button">Continuar</button>
+      </div>
+    </section>
+  </main>
+
+  <main class="fade-in chapter-container hidden" id="private-letter-container">
+    <section class="chapter-card glass" id="private-letter-screen">
+      <span class="chapter-index">Carta privada</span>
+      <h1 class="elegant-title">Algo que solo quiero decirte a ti</h1>
+      <p id="private-intro-text" class="body-text"></p>
+      <div id="private-prompt-container" class="chapter-actions">
+        <span id="private-question-text" class="song-current-label"></span>
+        <input id="private-answer-input" type="text" class="body-text" placeholder="Escribe tu respuesta aquí" autocomplete="off" />
+        <button id="private-submit-button" class="btn-primary" type="button">Enviar</button>
+        <p id="private-feedback-text" class="body-text hidden"></p>
+      </div>
+      <div class="chapter-actions private-letter-content hidden" id="private-letter-content">
+        <div id="private-letter-text" class="body-text private-letter-text"></div>
+        <button id="private-return-button" class="text-link" type="button">Volver</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/capitulo03.js"></script>
+  <script type="module" src="./js/chapter03Private.js"></script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Karina</title>
+    
+    <!-- Google Fonts: Playfair Display (Serif Elegante) e Inter (Sans-serif limpia) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/countdown.css">
+    <link rel="stylesheet" href="./css/animations.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+    <!-- Contenedor Principal del Contador -->
+    <main id="main-view" class="fade-in">
+        <section class="countdown-wrapper">
+            <!-- Título Principal -->
+            <h1 class="birthday-title">Feliz cumpleaños, Karina</h1>
+            
+            <!-- Kicker y Descripción Original -->
+            <p class="countdown-kicker">Para una fecha especial</p>
+            <p class="countdown-caption">Hay recuerdos que merecen llegar justo cuando tienen que llegar.</p>
+            
+            <!-- Contador -->
+            <div id="countdown-container" class="countdown-grid">
+                <div class="time-box">
+                    <span id="days" class="time-number">00</span>
+                    <span class="time-label">Días</span>
+                </div>
+                <div class="time-box">
+                    <span id="hours" class="time-number">00</span>
+                    <span class="time-label">Horas</span>
+                </div>
+                <div class="time-box">
+                    <span id="minutes" class="time-number">00</span>
+                    <span class="time-label">Minutos</span>
+                </div>
+                <div class="time-box">
+                    <span id="seconds" class="time-number">00</span>
+                    <span class="time-label">Segundos</span>
+                </div>
+            </div>
+            
+            <!-- Texto debajo del Contador -->
+            <p class="countdown-message">Después de tanta espera... por fin llegó el día.</p>
+            
+            <!-- Sección de Recuerdo -->
+            <div class="memory-section">
+                <h3 class="memory-title">Antes de comenzar...</h3>
+                <p class="memory-description">Hay un pequeño detalle que quería conservar desde el inicio de esta historia.</p>
+                
+                <div class="memory-input-wrapper">
+                    <label for="memory-place" class="memory-label">¿Dónde nos conocimos?</label>
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="memory-place" 
+                            class="memory-input" 
+                            value="IPUC La Maria" 
+                            readonly
+                        >
+                        <span class="verification-icon">✓</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botón de Continuación -->
+            <button id="btn-continue" class="btn-continue">Continuar</button>
+        </section>
+    </main>
+
+    <!-- Modal de Autenticación Íntima -->
+    <div id="auth-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="btn-close-modal" class="btn-close">&times;</button>
+            <h2 id="question-text" class="modal-title"></h2>
+            <input type="text" id="answer-input" class="elegant-input" placeholder="Tu respuesta..." autocomplete="off">
+            <div id="feedback-message" class="feedback-text hidden"></div>
+            <button id="btn-submit" class="btn-primary">Recordar</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Transición Cinematográfica -->
+    <div id="transition-screen" class="cinematic-screen hidden">
+        <div class="typewriter-container">
+            <p id="typewriter-text" class="typewriter-text"></p>
+        </div>
+    </div>
+
+    <!-- Script Principal inline (compatible con file://) -->
+    <script>
+    // CONFIG local — editable
+    const TARGET_DATE = new Date('2026-07-23T10:00:00');
+    const QUESTION = '¿Donde fue la primera vez que nos vimos?';
+    const VALID_ANSWERS = [
+      'ronporcan',
+    ];
+    const NEAR_ANSWERS = [
+      'macarron',
+    ];
+
+    const ROUTES = {
+      intro: 'index.html',
+      chapter1: 'capitulo01.html',
+      chapter2: 'capitulo02.html',
+      chapter3: 'capitulo03.html',
+      chapter4: 'capitulo04.html',
+      ending: 'epilogo.html'
+    };
+
+    // Developer flags via query string: ?dev=1 or ?no_redirect=1 to skip automatic redirects; ?clear_access=1 to remove stored access (useful for testing)
+    const _urlParams = new URLSearchParams(location.search);
+    const DEV_SKIP_REDIRECT = _urlParams.has('dev') || _urlParams.get('no_redirect') === '1';
+    window.DEV_SKIP_REDIRECT = DEV_SKIP_REDIRECT;
+    const DEV_CLEAR_ACCESS = _urlParams.get('clear_access') === '1';
+    if(DEV_CLEAR_ACCESS){
+      try{ localStorage.removeItem('accessGranted'); localStorage.removeItem('musicAllowed'); console.info('DEV: cleared accessGranted and musicAllowed from localStorage'); }catch(e){}
+    }
+
+    // Helpers
+    function $(id){ return document.getElementById(id); }
+    function normalizeAnswer(text){
+      if(typeof text !== 'string') return '';
+      try{
+        return text.trim().replace(/\s+/g,' ').normalize('NFD').replace(/\p{Diacritic}+/gu, '').replace(/[^\p{L}\p{N} ]+/gu, '').toLowerCase();
+      }catch(e){
+        // Fallback for older engines without Unicode property escapes
+        return text.trim().replace(/\s+/g,' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]+/gi, '');
+      }
+    }
+
+    // Safe attempt to play background audio after a user gesture
+    function tryPlayBackground(){
+      try{
+        const audio = document.getElementById('bg-audio');
+        if(!audio) return Promise.resolve(false);
+        return audio.play().then(()=>{
+          try{ localStorage.setItem('musicAllowed','true'); }catch(e){}
+          return true;
+        }).catch(()=>{
+          return false;
+        });
+      }catch(e){ return Promise.resolve(false); }
+    }
+
+    // Countdown
+    function tickCountdown(){
+      const now = new Date();
+      const diff = Math.max(0, TARGET_DATE - now);
+      if(diff <= 0){
+        // time reached -> grant access and navigate
+        try{ localStorage.setItem('accessGranted','true'); }catch(e){}
+        $('days').textContent = '00';
+        $('hours').textContent = '00';
+        $('minutes').textContent = '00';
+        $('seconds').textContent = '00';
+        clearInterval(window._countdownTimer);
+        // Small delay to allow UI update before redirecting
+        setTimeout(()=>{
+          if(!DEV_SKIP_REDIRECT){
+            window.location.href = ROUTES.chapter1;
+          } else {
+            // In dev mode, just log and keep the page for inspection
+            console.info('DEV: target date reached — accessGranted set but redirect suppressed (dev mode)');
+          }
+        }, 120);
+        return;
+      }
+      const totalSeconds = Math.floor(diff/1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400)/3600);
+      const minutes = Math.floor((totalSeconds % 3600)/60);
+      const seconds = totalSeconds % 60;
+      setCounterValue('days', days);
+      setCounterValue('hours', hours);
+      setCounterValue('minutes', minutes);
+      setCounterValue('seconds', seconds);
+    }
+
+    function setCounterValue(id, value){
+      const element = $(id);
+      const next = String(value).padStart(2,'0');
+      if(element.textContent !== next){
+        element.textContent = next;
+        element.classList.remove('number-tick');
+        void element.offsetWidth;
+        element.classList.add('number-tick');
+      }
+    }
+
+    // Modal / Auth
+    function setupAuth(){
+      const btnUnlock = $('btn-unlock');
+      const btnContinue = $('btn-continue');
+      const modal = $('auth-modal');
+      const btnClose = $('btn-close-modal');
+      const questionText = $('question-text');
+      const input = $('answer-input');
+      const feedback = $('feedback-message');
+      const transitionScreen = $('transition-screen');
+      const typewriterText = $('typewriter-text');
+
+      // Función compartida para iniciar la transición
+      async function startCinematicTransition(){
+        try{ localStorage.setItem('accessGranted','true'); }catch(e){}
+        // Attempt to start background music as part of this user gesture (good for mobile autoplay policies)
+        await tryPlayBackground();
+        // cinematic transition
+        document.body.style.overflow = 'hidden';
+        transitionScreen.classList.remove('hidden');
+        // typewriter sequence
+        const phrases = [
+          'Dicen que algunas personas llegan por casualidad...',
+          'Yo creo que algunas llegan exactamente cuando tenían que llegar.',
+          'Aunque nuestros caminos se cruzaron antes...',
+          'Fue en La María donde realmente comenzó esta historia.'
+        ];
+        (async function play(){
+          for(const p of phrases){
+            await typewriter(typewriterText, p, 34);
+            await sleep(900);
+            if(p !== phrases[phrases.length-1]){ typewriterText.style.opacity = 0; await sleep(400); typewriterText.textContent = ''; typewriterText.style.opacity = 1; }
+          }
+          // redirect to chapter1
+          if(!window.DEV_SKIP_REDIRECT) window.location.href = ROUTES.chapter1; else console.info('DEV: would redirect to', ROUTES.chapter1);
+        })();
+      }
+
+      // Manejador para el botón "Continuar"
+      if(btnContinue){
+        btnContinue.addEventListener('click', startCinematicTransition);
+      }
+
+      if(!btnUnlock) return;
+      questionText.textContent = QUESTION;
+
+      btnUnlock.addEventListener('click', ()=>{
+        modal.classList.remove('hidden');
+        input.focus();
+      });
+      btnClose.addEventListener('click', ()=>{
+        modal.classList.add('hidden');
+        input.value = '';
+        feedback.classList.add('hidden');
+      });
+
+      async function handleSuccess(){
+        modal.classList.add('hidden');
+        await startCinematicTransition();
+      }
+
+      function validate(){
+        const val = input.value || '';
+        const norm = normalizeAnswer(val);
+        if(VALID_ANSWERS.some(a => normalizeAnswer(a) === norm)){
+          feedback.classList.add('hidden');
+          handleSuccess();
+          return;
+        }
+        if(NEAR_ANSWERS.some(a => normalizeAnswer(a) === norm)){
+          feedback.classList.remove('hidden');
+          feedback.textContent = '💛 ¡Casi!\n\nTienes razón. Ese fue el primer lugar donde nuestros caminos se cruzaron.\nPero todavía no nos conocíamos realmente. Estoy buscando el lugar donde comenzó nuestra amistad.';
+          input.value = '';
+          input.focus();
+          return;
+        }
+        // incorrect
+        feedback.classList.remove('hidden');
+        feedback.textContent = 'No es eso… inténtalo de nuevo.';
+        feedback.classList.add('feedback');
+        const card = document.querySelector('.modal-content');
+        if(card){ card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
+        input.select();
+      }
+
+      $('btn-submit').addEventListener('click', validate);
+      input.addEventListener('keypress', (e)=>{ if(e.key === 'Enter'){ validate(); } });
+    }
+
+    // small utilities
+    function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+    async function typewriter(el, text, speed){
+      el.textContent = '';
+      for(let i=0;i<text.length;i++){
+        el.textContent += text.charAt(i);
+        await sleep(speed);
+      }
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', ()=>{
+      tickCountdown();
+      window._countdownTimer = setInterval(tickCountdown, 1000);
+      setupAuth();
+      // Respect previously granted access (but allow dev override)
+      try{
+        if(localStorage.getItem('accessGranted') === 'true') {
+          if(!DEV_SKIP_REDIRECT){
+            // access was granted previously — navigate immediately
+            window.location.href = ROUTES.chapter1;
+          } else {
+            console.info('DEV: accessGranted present but redirect suppressed (dev mode)');
+          }
+        }
+      }catch(e){}
+    });
+    </script>
+
+    <!-- Música de fondo -->
+    <audio id="bg-audio" preload="auto" loop>
+      <source src="./assets/music/backgrounds/background.mp3" type="audio/mpeg">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <button id="music-btn" aria-label="Reproducir música">▶</button>
+
+    <script>
+    (function(){
+      const audio = document.getElementById('bg-audio');
+      const btn = document.getElementById('music-btn');
+      // Volumen por defecto (puedes ajustar entre 0.0 y 1.0)
+      audio.volume = 0.14;
+      // Loop ya establecido con el atributo loop, pero por compatibilidad añadimos listener
+      audio.addEventListener('ended', ()=>{
+        // por seguridad, reanudar al terminar
+        try{ audio.currentTime = 0; audio.play().catch(()=>{}); }catch(e){}
+      });
+
+      function setPlayingUI(isPlaying){
+        if(isPlaying){ btn.classList.add('playing'); btn.textContent = '❚❚'; }
+        else { btn.classList.remove('playing'); btn.textContent = '▶'; }
+      }
+
+      // Intentar autoplay al cargar (muchos navegadores lo bloquearán si no hubo interacción)
+      function tryAutoplay(){
+        audio.play().then(()=>{
+          setPlayingUI(true);
+        }).catch((err)=>{
+          // Autoplay bloqueado: deja el control visible para que el usuario pulse
+          setPlayingUI(false);
+          // aumentar la visibilidad del botón (breve pulso)
+          btn.classList.add('paused');
+          setTimeout(()=>btn.classList.remove('paused'), 900);
+        });
+      }
+
+      // Toggle manual
+      btn.addEventListener('click', ()=>{
+        if(audio.paused){
+          audio.play().then(()=> setPlayingUI(true)).catch(()=> setPlayingUI(false));
+        } else {
+          audio.pause(); setPlayingUI(false);
+        }
+      });
+
+      // Iniciar intento de autoplay pronto — después de DOMContentLoaded
+      if(document.readyState === 'complete' || document.readyState === 'interactive'){
+        // pequeña demora para que la página termine de entrar
+        setTimeout(tryAutoplay, 250);
+      } else {
+        document.addEventListener('DOMContentLoaded', ()=> setTimeout(tryAutoplay, 250));
+      }
+
+      // Si el usuario ya permitió audio antes (persistencia), intentar reproducir
+      try{
+        if(localStorage.getItem('musicAllowed') === 'true'){
+          audio.play().then(()=> setPlayingUI(true)).catch(()=>{});
+        }
+      }catch(e){}
+
+      // Guardar preferencia cuando el usuario reproduce manualmente
+      audio.addEventListener('play', ()=>{
+        try{ localStorage.setItem('musicAllowed','true'); }catch(e){}
+        setPlayingUI(true);
+      });
+      audio.addEventListener('pause', ()=> setPlayingUI(false));
+    })();
+    </script>
+</body>
+</html>

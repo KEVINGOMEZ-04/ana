@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Capítulo II — Los pequeños momentos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/animations.css">
+  <link rel="stylesheet" href="./css/chapter02.css">
+</head>
+<body class="chapter-container">
+  <main id="chapter-root" class="chapter02-container">
+    
+    <!-- TRANSICIÓN INICIAL (igual a Capítulo 1) -->
+    <section id="scene-transition" class="scene dark-scene">
+      <div class="scene-inner">
+        <div id="transition-text" class="scene-line"></div>
+      </div>
+    </section>
+
+    <!-- INTRODUCCIÓN DEL CAPÍTULO -->
+    <section class="chapter-intro hidden">
+      <span class="chapter-index">Archivo de Recuerdos · Fase II</span>
+      <h1 class="elegant-title">Capítulo II</h1>
+      <h2 class="elegant-title" style="font-size: clamp(1.8rem, 5vw, 2.8rem); color: var(--color-muted); font-weight: 300;">Los pequeños momentos</h2>
+      
+      <p class="subtitle">
+        "No recuerdo cuándo empezamos a ser mejores amigos.<br>
+        Solo recuerdo que un día ya era normal que estuvieras ahí."
+      </p>
+    </section>
+
+    <!-- GRID DE POLAROIDS (se genera dinámicamente con JavaScript) -->
+    <section class="memories-grid" id="memories-grid">
+      <!-- Las polaroids se inyectan aquí desde JavaScript -->
+    </section>
+
+    <!-- MODAL PARA VISUALIZAR RECUERDO EXPANDIDO -->
+    <div class="memory-overlay" id="memory-overlay">
+      <div class="memory-modal" id="memory-modal">
+        
+        <!-- ENCABEZADO DEL MODAL -->
+        <div class="modal-header">
+          <div class="modal-header-info">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <div class="modal-meta">
+              <div class="modal-meta-item">
+                <span class="modal-meta-label">📍 Lugar:</span>
+                <span id="modal-location"></span>
+              </div>
+              <div class="modal-meta-item">
+                <span class="modal-meta-label">📅 Fecha:</span>
+                <span id="modal-date"></span>
+              </div>
+            </div>
+          </div>
+          <button class="modal-close" id="modal-close">✕</button>
+        </div>
+
+        <!-- IMAGEN PRINCIPAL -->
+        <img id="modal-image" class="modal-image" src="" alt="">
+        <video id="modal-video" class="modal-video" playsinline controls preload="metadata"></video>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="modal-content">
+          
+          <!-- Descripción breve -->
+          <div>
+            <p class="modal-section-title">Resumen</p>
+            <div class="modal-divider"></div>
+            <p class="modal-description" id="modal-description"></p>
+          </div>
+
+          <!-- La historia con efecto typewriter -->
+          <div>
+            <p class="modal-section-title">La historia</p>
+            <div class="modal-divider"></div>
+            <div class="modal-story" id="modal-story"></div>
+          </div>
+
+          <!-- Por qué importa -->
+          <div class="modal-importance">
+            <span class="modal-importance-label">Por qué importa</span>
+            <p class="modal-importance-text" id="modal-importance"></p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOTÓN PARA CONTINUAR AL SIGUIENTE CAPÍTULO -->
+    <div class="continue-wrap">
+      <button id="btn-continue-ch3" class="btn-continue">Continuar al Capítulo III →</button>
+    </div>
+
+  </main>
+
+  <!-- SCRIPTS -->
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/capitulo02.js"></script>
+</body>
+</html>
+
+<!-- 
+  ============================================
+  NOTAS DE ESTRUCTURA HTML
+  ============================================
+  
+  1. ELEMENTOS QUE JAVASCRIPT USA (NO CAMBIAR IDS):
+     - #chapter-root: Contenedor principal
+     - #memories-grid: Donde se inyectan las polaroids
+     - #memory-overlay: El overlay oscuro del fondo
+     - #memory-modal: La caja del modal
+     - #modal-*: Todos los campos dentro del modal
+     - #btn-continue-ch3: Botón para siguiente capítulo
+  
+  2. CLASES CSS QUE JAVASCRIPT USA:
+     - .hidden: Para ocultar/mostrar elementos
+     - .active: Para cuando un modal está abierto
+     - .polaroid: La tarjeta de cada recuerdo
+  
+  3. LA TRANSICIÓN INICIAL:
+     - #scene-transition muestra líneas de texto como en Cap 1
+     - Desaparece cuando comienza el grid de memorias
+  
+  4. EL INTRO DEL CAPÍTULO:
+     - Aparece después de la transición
+     - Mostrará el título y subtítulo
+  
+  5. EL GRID:
+     - Inicialmente vacío
+     - JavaScript lo llena con <article class="polaroid"> generadas desde memories.js
+  
+  6. EL MODAL:
+     - Comienza hidden
+     - Se activa cuando haces click en una polaroid
+     - Se cierra con el botón X o presionando ESC
+  
+  ============================================
+-->
