@@ -1,0 +1,52 @@
+/* chapter01.css - Estilos específicos para Capítulo I */
+
+.scene{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:6vw 4vw;position:relative;overflow:hidden;background:transparent !important;}
+.hidden{display:none !important;}
+
+/* Scene 1 - dark opening */
+.dark-scene{color:#f7f5f6;}
+.dark-scene::before{content:'';position:absolute;width:min(72vw,760px);aspect-ratio:1;border:1px solid rgba(232,193,212,.13);border-radius:50%;}
+.scene-inner{max-width:900px;text-align:center;padding:clamp(2rem,5vw,4rem);position:relative;background:linear-gradient(135deg,rgba(47,31,44,.58),rgba(10,10,14,.64));border:1px solid rgba(255,232,240,.14);border-radius:24px;box-shadow:0 20px 70px rgba(0,0,0,.25);backdrop-filter:blur(12px);}
+.scene-inner::before{content:'ARCHIVO DE RECUERDOS · 0001';display:block;margin-bottom:1.4rem;font-size:.65rem;letter-spacing:.22em;color:var(--color-accent);opacity:.85;}
+.scene-line{font-family:var(--font-heading);font-size:clamp(22px,3.6vw,36px);line-height:1.4;color:var(--color-text);opacity:0;transition:opacity .5s ease, transform .5s var(--motion-ease);}
+.scene-line.visible{opacity:1;transform:translateY(0);} 
+.scene-line.hiddenline{opacity:0;transform:translateY(-8px);} 
+
+/* File card */
+.file-card{width:100%;max-width:760px;padding:clamp(1.7rem,5vw,3.5rem);border-radius:22px;text-align:left;position:relative;overflow:hidden;animation:breathe 5s ease-in-out infinite;} 
+.file-card::after{content:'';position:absolute;right:-46px;top:-46px;width:130px;height:130px;border:1px solid rgba(232,193,212,.28);border-radius:50%;}
+.file-header{font-family:var(--font-heading);font-size:clamp(1.2rem,3vw,1.65rem);color:var(--color-accent);letter-spacing:.1em;margin-bottom:1.5rem}
+.file-id{font-family:var(--font-body);font-size:.64rem;letter-spacing:.16em;color:var(--color-muted);margin-left:.45rem;vertical-align:middle;}
+.file-meta{color:var(--color-text);opacity:.95;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-bottom:1.4rem;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+.file-meta div{padding:.95rem;background:rgba(255,255,255,.035);font-size:.94rem}.file-meta strong{display:block;margin-bottom:.25rem;color:var(--color-muted);font-size:.69rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.file-note{color:var(--color-muted);margin-bottom:1.25rem;font-style:italic}
+.file-actions{display:flex;justify-content:flex-end}
+
+/* Dialog scene */
+.dialog-wrap{width:100%;max-width:780px;padding:0;border-radius:22px;min-height:270px;text-align:left;overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(135deg,rgba(57,39,54,.82),rgba(15,13,19,.88));}
+.dialog-speaker{font-family:var(--font-body);font-weight:600;color:var(--color-accent);padding:1.15rem clamp(1.5rem,4vw,3rem);margin:0;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;min-height:54px;border-bottom:1px solid rgba(255,255,255,.1)}
+.dialog-speaker:empty::before{content:'NARRADOR';opacity:.7}
+.dialog-text{font-family:var(--font-heading);font-size:clamp(1.45rem,4vw,2.25rem);font-style:italic;line-height:1.42;color:var(--color-text);min-height:216px;padding:clamp(1.6rem,4vw,3rem);display:flex;align-items:center;transition:opacity .26s ease}
+.dialog-text:empty::before{content:'La historia continúa…';font-family:var(--font-body);font-size:.8rem;font-style:normal;letter-spacing:.08em;color:rgba(232,193,212,.58)}
+
+/* Analysis */
+.analysis-card{width:100%;max-width:640px;padding:clamp(2rem,5vw,3.4rem);border-radius:22px;text-align:left}.analysis-card h3{font-family:var(--font-heading);font-weight:400;font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:.65rem;color:var(--color-accent)}.analysis-intro{color:var(--color-muted);line-height:1.6;margin-bottom:1.25rem}
+.analysis-list{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.analysis-list li{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.08);animation:softReveal .55s var(--motion-ease) both}.analysis-list li:nth-child(2){animation-delay:.08s}.analysis-list li:nth-child(3){animation-delay:.16s}.analysis-list li:nth-child(4){animation-delay:.24s}
+.score{color:var(--color-accent);font-weight:700}
+
+/* Closing */
+.closing-inner{text-align:center;max-width:900px}
+.closing-line{font-family:var(--font-heading);font-size:clamp(20px,3.6vw,32px);color:var(--color-text);opacity:0;transform:translateY(10px);transition:opacity .8s ease, transform .8s ease;margin:8px 0}
+.closing-line.visible{opacity:1;transform:translateY(0)}
+.closing-line.highlight{color:var(--color-accent);font-size:clamp(22px,4vw,36px)}
+.continue-wrap{margin-top:36px;opacity:0;transform:translateY(10px);transition:opacity .5s var(--motion-ease),transform .5s var(--motion-ease)}
+.closing-note{margin:1.65rem auto 0;max-width:530px;color:var(--color-muted);font-size:.92rem;line-height:1.65;opacity:0;transform:translateY(8px);transition:opacity .55s var(--motion-ease),transform .55s var(--motion-ease)}
+.closing-note.visible,.continue-wrap.visible{opacity:1;transform:translateY(0)}
+
+/* Responsive tweaks */
+@media(max-width:640px){
+  .scene-line{font-size:20px}
+  .file-meta{grid-template-columns:1fr}
+  .dialog-text{font-size:1.35rem}
+}

@@ -1,0 +1,36 @@
+/* Movimiento compartido: breve, legible y sin desplazar el fondo. */
+.fade-in { animation: fadeIn .8s var(--motion-ease, cubic-bezier(.22, .8, .2, 1)) both; }
+.fade-out { animation: fadeOut .42s ease both; }
+.scene-active { animation: sceneEnter .62s var(--motion-ease, cubic-bezier(.22, .8, .2, 1)) both; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes sceneEnter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes softReveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes breathe { 0%,100% { box-shadow: 0 18px 54px rgba(0,0,0,.28); } 50% { box-shadow: 0 22px 66px rgba(69,38,61,.34); } }
+
+/* Efecto visual de cursor en máquina de escribir */
+.typewriter-text::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: var(--color-muted);
+}
+
+.typewriter-text.finished::after {
+    display: none;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

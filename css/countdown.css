@@ -1,0 +1,386 @@
+/* countdown.css - Estructura de la portada y modal */
+.countdown-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: 2.25rem;
+    padding: 2rem;
+    position: relative;
+}
+
+.countdown-kicker {
+    color: rgba(245,245,247,.7);
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    animation: softReveal .65s var(--motion-ease) both;
+}
+
+.countdown-caption {
+    max-width: 370px;
+    margin-top: -.95rem;
+    color: var(--color-muted);
+    font-size: .94rem;
+    font-weight: 300;
+    line-height: 1.65;
+    text-align: center;
+    animation: softReveal .65s .12s var(--motion-ease) both;
+}
+
+.countdown-wrapper .elegant-title {
+    font-size: clamp(2.7rem, 7vw, 5.5rem);
+    line-height: .95;
+    text-shadow: 0 7px 34px rgba(232, 193, 212, .22);
+    animation: softReveal .7s .06s var(--motion-ease) both;
+}
+
+.countdown-grid {
+    display: flex;
+    gap: clamp(.6rem, 2vw, 1.25rem);
+    padding: clamp(.8rem, 2vw, 1.2rem);
+    border-radius: 22px;
+    background: rgba(8, 8, 10, .42);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: var(--shadow-deep);
+    backdrop-filter: blur(16px);
+    animation: softReveal .7s .18s var(--motion-ease) both;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: clamp(64px, 12vw, 108px);
+    padding: clamp(.7rem, 1.7vw, 1.1rem) clamp(.35rem, 1.3vw, .9rem);
+    border-radius: 15px;
+    background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.025));
+    border: 1px solid rgba(255,255,255,.1);
+    transition: transform .35s var(--motion-ease), border-color .35s ease, background .35s ease;
+}
+
+@media (hover:hover) {
+    .time-box:hover { transform: translateY(-4px); border-color: rgba(232,193,212,.46); background: rgba(255,255,255,.12); }
+}
+
+.time-number {
+    font-family: var(--font-heading);
+    font-size: clamp(2.65rem, 7vw, 5.4rem);
+    font-weight: 400;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.time-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2.4px;
+    color: var(--color-muted);
+    margin-top: 0.5rem;
+}
+
+.text-link {
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: .2rem;
+    padding: .85rem 1.35rem;
+    border: 1px solid rgba(232, 193, 212, .28);
+    border-radius: 999px;
+    color: var(--color-text);
+    background: rgba(255,255,255,.035);
+    animation: softReveal .65s .3s var(--motion-ease) both;
+}
+
+.text-link:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+}
+
+/* Modal Elegante */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 5, 5, 0.68);
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, rgba(35, 29, 35, .96), rgba(13, 13, 16, .97));
+    border: 1px solid rgba(232, 193, 212, .26);
+    padding: 4.5rem 3rem 3.2rem;
+    border-radius: 24px;
+    text-align: center;
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 30px 90px rgba(0,0,0,.64), 0 0 60px rgba(232,193,212,.08);
+}
+
+.time-number.number-tick { animation: numberTick .24s var(--motion-ease); }
+@keyframes numberTick { from { opacity: .45; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.modal-overlay:not(.hidden) .modal-content { animation: modalEnter .38s var(--motion-ease) both; }
+@keyframes modalEnter { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.modal-content::before { content: 'UN PEQUEÑO RECUERDO'; position: absolute; top: 1.5rem; left: 0; right: 0; font-size: .65rem; letter-spacing: .2em; color: var(--color-accent); }
+
+.btn-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.btn-close:hover {
+    color: var(--color-accent);
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(1.65rem, 4vw, 2.25rem);
+    margin-bottom: 2rem;
+}
+
+.elegant-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 10px;
+    background: rgba(255,255,255,.045);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    padding: 14px 16px;
+    text-align: center;
+    outline: none;
+    transition: var(--transition-smooth);
+    margin-bottom: 1.5rem;
+}
+
+.elegant-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(232, 193, 212, .1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #fff 0%, #f2d8e4 100%);
+    color: var(--color-bg);
+    border: none;
+    padding: 13px 32px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 32px rgba(232,193,212,.18);
+}
+
+.feedback-text {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+    white-space: pre-line;
+    line-height: 1.5;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Título Principal de Cumpleaños */
+.birthday-title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(2.2rem, 6vw, 4.2rem);
+    color: var(--color-accent);
+    text-shadow: 0 7px 34px rgba(232, 193, 212, .22);
+    line-height: 1.1;
+    animation: softReveal .7s var(--motion-ease) both;
+    letter-spacing: 0.5px;
+}
+
+/* Mensaje debajo del Contador */
+.countdown-message {
+    max-width: 420px;
+    color: var(--color-muted);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.6;
+    text-align: center;
+    animation: softReveal .65s .24s var(--motion-ease) both;
+    margin-top: -.5rem;
+}
+
+/* Sección de Recuerdo */
+.memory-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    max-width: 480px;
+    padding: 2.5rem 2rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(232, 193, 212, .15);
+    backdrop-filter: blur(10px);
+    animation: softReveal .65s .3s var(--motion-ease) both;
+}
+
+.memory-title {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+    color: var(--color-text);
+    margin: 0;
+}
+
+.memory-description {
+    color: var(--color-muted);
+    font-size: .95rem;
+    font-weight: 300;
+    line-height: 1.6;
+    text-align: center;
+    margin: 0;
+}
+
+.memory-input-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .8rem;
+}
+
+.memory-label {
+    font-family: var(--font-body);
+    font-size: .95rem;
+    font-weight: 400;
+    color: var(--color-text);
+    letter-spacing: 0.3px;
+}
+
+.input-container {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+}
+
+.memory-input {
+    width: 100%;
+    background: rgba(255, 255, 255, .055);
+    border: 1px solid rgba(232, 193, 212, .2);
+    border-radius: 10px;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 12px 40px 12px 16px;
+    text-align: left;
+    outline: none;
+    transition: var(--transition-smooth);
+    cursor: default;
+}
+
+.memory-input:focus {
+    border-color: rgba(232, 193, 212, .3);
+    box-shadow: 0 0 0 3px rgba(232, 193, 212, .08);
+}
+
+.verification-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    pointer-events: none;
+    animation: softReveal .5s .4s var(--motion-ease) both;
+}
+
+/* Botón de Continuación */
+.btn-continue {
+    background: linear-gradient(135deg, rgba(232, 193, 212, .95) 0%, rgba(232, 193, 212, .85) 100%);
+    color: var(--color-bg);
+    border: none;
+    padding: 14px 48px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.8px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    animation: softReveal .65s .36s var(--motion-ease) both;
+    box-shadow: 0 12px 32px rgba(232, 193, 212, .18);
+}
+
+.btn-continue:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 48px rgba(232, 193, 212, .28);
+    background: linear-gradient(135deg, var(--color-accent) 0%, rgba(232, 193, 212, .9) 100%);
+}
+
+.btn-continue:active {
+    transform: translateY(-1px);
+}
+
+/* Pantalla Cinematográfica */
+.cinematic-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 8, 13, .64);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 2rem;
+}
+
+.typewriter-container {
+    max-width: 800px;
+    text-align: center;
+}
+
+.typewriter-text {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--color-text);
+    line-height: 1.5;
+    min-height: 3rem;
+}

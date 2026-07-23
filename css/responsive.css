@@ -1,0 +1,61 @@
+/* responsive.css - Adaptabilidad */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .countdown-grid {
+        gap: 1.5rem;
+    }
+    
+    .time-number {
+        font-size: 3rem;
+    }
+    
+    .countdown-wrapper .elegant-title {
+        font-size: 2rem;
+    }
+    
+    .typewriter-text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Celular */
+@media (max-width: 480px) {
+    .countdown-wrapper {
+        padding: 1rem;
+        gap: 1.75rem;
+    }
+
+    .countdown-grid {
+        width: 100%;
+        gap: 0.35rem;
+        padding: 0.5rem;
+    }
+
+    .time-box {
+        min-width: 0;
+        flex: 1;
+        padding: 0.7rem 0.15rem;
+    }
+    
+    .time-number {
+        font-size: 2.2rem;
+    }
+    
+    .time-label {
+        font-size: 0.55rem;
+        letter-spacing: 1.2px;
+    }
+    
+    .modal-content {
+        padding: 3rem 1.5rem;
+    }
+    
+    .modal-title {
+        font-size: 1.4rem;
+    }
+    
+    .typewriter-text {
+        font-size: 1.2rem;
+    }
+}

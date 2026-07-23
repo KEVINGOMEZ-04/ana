@@ -1,0 +1,611 @@
+/* chapter02.css - Capítulo II: Los Pequeños Momentos */
+
+/* ========================================
+   CONTENEDOR PRINCIPAL
+   ======================================== */
+
+.chapter02-container {
+    min-height: 100vh;
+    padding: clamp(2rem, 5vw, 4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Título del capítulo */
+.chapter-intro {
+    text-align: center;
+    margin-bottom: clamp(3rem, 8vw, 5rem);
+    opacity: 0;
+    animation: softReveal 0.8s var(--motion-ease) 0.4s both;
+}
+
+.chapter-intro .chapter-index {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.chapter-intro .elegant-title {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    margin-bottom: 1rem;
+}
+
+.chapter-intro .subtitle {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: var(--color-muted);
+    font-style: italic;
+    max-width: 600px;
+    line-height: 1.6;
+    margin: 0 auto;
+}
+
+/* ========================================
+   GRID DE POLAROIDS
+   ======================================== */
+
+.memories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    padding: clamp(1rem, 3vw, 2rem);
+    max-width: 1400px;
+    margin: 0 auto;
+    justify-content: center;
+    perspective: 1200px;
+}
+
+/* ========================================
+   ESTILO POLAROID
+   ======================================== */
+
+.polaroid {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 9 / 11;
+    background: linear-gradient(135deg, rgba(48, 34, 46, 0.9), rgba(15, 13, 19, 0.95));
+    border: 1px solid rgba(255, 231, 239, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(232, 193, 212, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s var(--motion-ease);
+    
+    /* Rotación natural (cada polaroid gira ligeramente diferente) */
+    transform: rotate(var(--rotation, -2deg)) translateZ(0);
+}
+
+/* Simular cinta adhesiva en la parte superior */
+.polaroid::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35%;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor de la imagen */
+.polaroid-image-wrapper {
+    width: 100%;
+    height: 70%;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    position: relative;
+}
+
+.polaroid-image,
+.polaroid-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s var(--motion-ease);
+}
+
+.polaroid-video {
+    display: block;
+}
+
+/* Información de la polaroid (parte inferior) */
+.polaroid-info {
+    padding: clamp(1rem, 2vw, 1.4rem);
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.polaroid-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--color-accent);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.polaroid-meta {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.polaroid-meta-item {
+    margin: 0;
+}
+
+/* ========================================
+   INTERACCIÓN POLAROID
+   ======================================== */
+
+/* Hover en escritorio */
+@media (hover: hover) {
+    .polaroid:hover {
+        transform: translateY(-12px) rotate(var(--rotation, -2deg)) scale(1.03);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(232, 193, 212, 0.15);
+    }
+
+    .polaroid:hover .polaroid-image,
+    .polaroid:hover .polaroid-video {
+        transform: scale(1.05);
+    }
+}
+
+/* Estado activo (cuando se clickea) */
+.polaroid.active {
+    z-index: 1000;
+}
+
+/* ========================================
+   MODAL - VISUALIZACIÓN EXPANDIDA
+   ======================================== */
+
+.memory-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 5, 5, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.35s var(--motion-ease);
+}
+
+.memory-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Container del modal */
+.memory-modal {
+    background: linear-gradient(135deg, rgba(48, 34, 46, 0.95), rgba(15, 13, 19, 0.98));
+    border: 1px solid rgba(255, 231, 239, 0.22);
+    border-radius: 20px;
+    max-width: min(90vw, 800px);
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 32px 96px rgba(0, 0, 0, 0.55), inset 0 0 60px rgba(232, 193, 212, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    
+    animation: modalEnter 0.4s var(--motion-ease) both;
+    transform: scale(0.95);
+    opacity: 0;
+}
+
+.memory-overlay.active .memory-modal {
+    transform: scale(1);
+    opacity: 1;
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Encabezado del modal */
+.modal-header {
+    position: relative;
+    padding: clamp(2rem, 5vw, 3rem);
+    border-bottom: 1px solid rgba(255, 231, 239, 0.12);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.modal-header-info {
+    flex: 1;
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-style: italic;
+    color: var(--color-accent);
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+}
+
+.modal-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modal-meta-item {
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-meta-label {
+    color: rgba(232, 193, 212, 0.6);
+    font-weight: 500;
+}
+
+/* Botón cerrar */
+.modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 231, 239, 0.2);
+    color: var(--color-muted);
+    font-size: 1.8rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s var(--motion-ease);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-family: inherit;
+}
+
+.modal-close:hover {
+    color: var(--color-accent);
+    background: rgba(232, 193, 212, 0.1);
+    border-color: rgba(232, 193, 212, 0.4);
+}
+
+/* Imagen principal en modal */
+.modal-image,
+.modal-video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 55vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.modal-video {
+    display: none;
+}
+
+/* Contenido del modal */
+.modal-content {
+    padding: clamp(2rem, 5vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Descripción breve (del polaroid) */
+.modal-description {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    font-style: italic;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Divisor visual */
+.modal-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-accent), transparent);
+    margin: 0.5rem 0;
+}
+
+/* Título de sección */
+.modal-section-title {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(232, 193, 212, 0.6);
+    margin-top: 0.5rem;
+}
+
+/* La historia principal - AQUÍ VA EL TYPEWRITER */
+.modal-story {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(245, 245, 247, 0.85);
+    min-height: 200px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* El "por qué importa" */
+.modal-importance {
+    padding: 1.5rem;
+    background: rgba(232, 193, 212, 0.08);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 8px;
+}
+
+.modal-importance-label {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(232, 193, 212, 0.6);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.modal-importance-text {
+    font-size: 1.05rem;
+    color: var(--color-text);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* ========================================
+   EFECTO BLUR EN GRID CUANDO MODAL ABIERTO
+   ======================================== */
+
+.memories-grid.blurred {
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+.memory-overlay.active ~ .memories-grid {
+    filter: blur(8px);
+    pointer-events: none;
+}
+
+/* ========================================
+   BOTÓN DE NAVEGACIÓN (Continuar)
+   ======================================== */
+
+.continue-wrap {
+    text-align: center;
+    margin-top: clamp(3rem, 8vw, 5rem);
+    opacity: 0;
+    animation: softReveal 0.8s var(--motion-ease) 3s both;
+}
+
+.btn-continue {
+    background: linear-gradient(135deg, #fff 0%, #f2d8e4 100%);
+    color: var(--color-bg);
+    border: none;
+    padding: 14px 36px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s var(--motion-ease);
+    font-size: 0.95rem;
+}
+
+.btn-continue:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(232, 193, 212, 0.25);
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Tablet (768px y menos) */
+@media (max-width: 768px) {
+    .memories-grid {
+        gap: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .polaroid {
+        max-width: 240px;
+    }
+
+    .modal-header {
+        flex-direction: column;
+    }
+
+    .modal-close {
+        position: static;
+        align-self: flex-end;
+    }
+
+    .modal-title {
+        font-size: clamp(1.4rem, 3vw, 2rem);
+    }
+
+    .modal-story {
+        font-size: 0.95rem;
+        min-height: 150px;
+    }
+}
+
+/* Móvil (480px y menos) */
+@media (max-width: 480px) {
+    .chapter02-container {
+        padding: clamp(1.5rem, 4vw, 2rem);
+    }
+
+    .chapter-intro {
+        margin-bottom: clamp(2rem, 5vw, 3rem);
+    }
+
+    .chapter-intro .subtitle {
+        font-size: 0.95rem;
+    }
+
+    .memories-grid {
+        gap: 1rem;
+        padding: 0.5rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .polaroid {
+        max-width: 200px;
+        aspect-ratio: 9 / 11;
+    }
+
+    .polaroid-title {
+        font-size: 0.95rem;
+    }
+
+    .polaroid-meta {
+        font-size: 0.75rem;
+    }
+
+    .memory-overlay {
+        padding: 1rem;
+    }
+
+    .memory-modal {
+        max-width: 95vw;
+        max-height: 90vh;
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+    }
+
+    .modal-close {
+        width: 36px;
+        height: 36px;
+        font-size: 1.4rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .modal-title {
+        font-size: 1.3rem;
+    }
+
+    .modal-description {
+        font-size: 0.95rem;
+    }
+
+    .modal-story {
+        font-size: 0.9rem;
+        min-height: 120px;
+    }
+
+    .continue-wrap {
+        margin-top: 2rem;
+    }
+}
+
+/* ========================================
+   SCROLL SUAVE EN MODAL
+   ======================================== */
+
+.memory-modal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.memory-modal::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.memory-modal::-webkit-scrollbar-thumb {
+    background: rgba(232, 193, 212, 0.3);
+    border-radius: 3px;
+}
+
+.memory-modal::-webkit-scrollbar-thumb:hover {
+    background: rgba(232, 193, 212, 0.5);
+}
+
+/* ========================================
+   ANIMACIONES DE CARGA INICIAL
+   ======================================== */
+
+.polaroid {
+    animation: polaroidEnter 0.6s var(--motion-ease) both;
+}
+
+/* Cada polaroid entra con un delay diferente */
+.polaroid:nth-child(1) { animation-delay: 0.5s; }
+.polaroid:nth-child(2) { animation-delay: 0.6s; }
+.polaroid:nth-child(3) { animation-delay: 0.7s; }
+.polaroid:nth-child(4) { animation-delay: 0.8s; }
+.polaroid:nth-child(5) { animation-delay: 0.9s; }
+.polaroid:nth-child(6) { animation-delay: 1s; }
+.polaroid:nth-child(7) { animation-delay: 1.1s; }
+.polaroid:nth-child(8) { animation-delay: 1.2s; }
+
+@keyframes polaroidEnter {
+    from {
+        opacity: 0;
+        transform: rotate(var(--rotation, -2deg)) scale(0.85) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(var(--rotation, -2deg)) scale(1) translateY(0);
+    }
+}
+
+/* ========================================
+   NOTAS PARA EDICIÓN
+   ======================================== */
+
+/* 
+   POLAROID ROTACIÓN NATURAL:
+   - Los CSS usan custom properties --rotation
+   - Se definen en JavaScript con valores aleatorios
+   - Esto mantiene la sensación orgánica
+   
+   COLORES Y DISEÑO:
+   - Mantiene exactamente los colores de global.css
+   - glass effect idéntico a otros componentes
+   - animaciones usan --motion-ease de global.css
+   
+   RESPONSIVE:
+   - Usa clamp() para que sea fluido
+   - Breakpoints en 768px y 480px
+   - En móvil sigue siendo "bonito", no se convierte en lista
+
+   IMPORTANTE:
+   - NO modificar los IDs de los elementos
+   - NO cambiar las clases principales
+   - El JavaScript depende de estos nombres
+*/
