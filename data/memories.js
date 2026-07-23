@@ -22,7 +22,7 @@ export const MEMORIES = [
     
     // EDITA ESTO: Ruta de la imagen (ej: '/assets/images/cafe-2018.jpg')
     // Las imágenes deben estar en: assets/images/
-    image: '/assets/images/memoria-001.jpg',
+    image: 'assets/images/memoria-001.jpg',
     
     // Descripción breve que aparece bajo la foto en la polaroid
     description: 'Una salida breve, pero que parche tan bacano',
@@ -48,7 +48,7 @@ export const MEMORIES = [
     date: 'septiembre 2022',
     
     // Video que reemplaza la imagen para este recuerdo
-    video: '/assets/video/memoria-002.mp4',
+    video: 'assets/video/memoria-002.mp4',
     
     description: 'Pesimo servicio, aun espero esas fresas con chocolate',
     
@@ -68,7 +68,7 @@ export const MEMORIES = [
     date: 'Diciembre 2022',
     
     // EDITA: Cambia esta ruta por tu imagen
-    image: '/assets/images/memoria-003.jpg',
+    image: 'assets/images/memoria-003.jpg',
     
     description: 'Nunca me habia sentido tan comodo ganando tan mal',
     
@@ -86,7 +86,7 @@ export const MEMORIES = [
     date: 'Enero 2019',
     
     // EDITA: Cambia esta ruta por tu imagen (puede ser screenshot si lo prefieres)
-    image: '/assets/images/memoria-004.jpg',
+    image: 'assets/images/memoria-004.jpg',
     
     description: 'Fotos, videos y caras raras no faltaron',
     
