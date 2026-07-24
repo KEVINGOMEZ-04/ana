@@ -86,6 +86,7 @@ export const initFinalLetterExperience = () => {
 
       <!-- Paso 4: La Carta Final -->
       <div id="final-letter-container" class="final-letter-card hidden">
+        <div class="letter-stamp-badge">✨ CARTA PRIVADA · PARA KARINA</div>
         <div id="final-letter-text" class="final-letter-content"></div>
         <div id="final-letter-hint" class="final-letter-hint">(Haz clic en cualquier parte de la carta para mostrar todo el texto)</div>
         

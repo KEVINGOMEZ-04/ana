@@ -1,45 +1,24 @@
 /* ==========================================================================
-   finalLetter.css — Animaciones Cinemáticas Mejoradas para La Carta
-   Llave mágica dorada, efecto de cerrojo, cajón con haz de luz, sobre 3D y carta.
+   finalLetter.css — Experiencia Cinemática y Manuscrito de Alta Gama para La Carta
+   Estilos de lujo, alineación perfecta, tipografía Playfair & Inter, resplandor dorado.
    ========================================================================== */
 
-/* 1. Modal de Validación (Paso 1) */
-.final-modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    background: rgba(8, 5, 9, 0.88);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    opacity: 0;
-    transition: opacity 0.5s var(--motion-ease, cubic-bezier(.22, .8, .2, 1));
-}
-
-.final-modal-overlay.active {
-    opacity: 1;
-}
-
-.final-modal-card {
-    width: min(100%, 520px);
-    padding: clamp(2rem, 6vw, 3.5rem);
-    border-radius: 28px;
-    background: linear-gradient(135deg, rgba(52, 36, 51, 0.94), rgba(15, 13, 19, 0.96));
-    border: 1px solid rgba(232, 193, 212, 0.32);
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 40px rgba(232, 193, 212, 0.16);
+/* 1. Modal / Primera Impresión: Carta Privada */
+.private-card-container {
+    width: min(100%, 720px);
+    margin: 0 auto;
+    padding: clamp(2.2rem, 6vw, 4rem);
+    border-radius: 32px;
+    background: linear-gradient(150deg, rgba(46, 30, 45, 0.95), rgba(15, 12, 18, 0.98));
+    border: 1px solid rgba(232, 193, 212, 0.35);
+    box-shadow: 0 35px 100px rgba(0, 0, 0, 0.6), 0 0 45px rgba(232, 193, 212, 0.14);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     text-align: center;
-    transform: scale(0.92) translateY(15px);
-    transition: transform 0.45s var(--motion-ease, cubic-bezier(.22, .8, .2, 1));
+    transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.2, 1), box-shadow 0.45s ease;
 }
 
-.final-modal-overlay.active .final-modal-card {
-    transform: scale(1) translateY(0);
-}
-
-/* 2. Escena de la Llave y el Cajón Cinemático (Paso 2) */
+/* 2. Escena Cinemática de la Llave y el Cajón (Paso 2) */
 .secret-stage-container {
     position: relative;
     width: 100%;
@@ -56,8 +35,8 @@
 /* Llave Dorada Mágica con Aura Radiante */
 .floating-key-wrapper {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 105px;
+    height: 105px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,10 +49,10 @@
 .floating-key-wrapper::before {
     content: '';
     position: absolute;
-    inset: -10px;
+    inset: -12px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(240, 217, 166, 0.45) 0%, rgba(232, 193, 212, 0.15) 50%, transparent 70%);
-    filter: blur(12px);
+    background: radial-gradient(circle, rgba(240, 217, 166, 0.5) 0%, rgba(232, 193, 212, 0.18) 50%, transparent 70%);
+    filter: blur(14px);
     opacity: 0;
     transition: opacity 0.6s ease;
     animation: haloPulse 2.5s ease-in-out infinite alternate;
@@ -88,62 +67,27 @@
     opacity: 1;
 }
 
-.floating-key-wrapper.visible .key-svg {
-    animation: keyFloat3D 3.5s ease-in-out infinite alternate;
-}
-
 .key-svg {
-    width: 75px;
-    height: 75px;
-    filter: drop-shadow(0 12px 25px rgba(240, 217, 166, 0.5)) drop-shadow(0 0 15px rgba(232, 193, 212, 0.4));
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 14px 28px rgba(240, 217, 166, 0.55)) drop-shadow(0 0 18px rgba(232, 193, 212, 0.45));
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
 }
 
 @keyframes haloPulse {
-    0% { transform: scale(0.9); opacity: 0.6; }
-    100% { transform: scale(1.15); opacity: 0.95; }
+    0% { transform: scale(0.9); opacity: 0.65; }
+    100% { transform: scale(1.18); opacity: 0.95; }
 }
 
-@keyframes keyFloat3D {
-    0% { transform: translateY(0) rotate(0deg) rotateY(0deg); }
-    50% { transform: translateY(-12px) rotate(5deg) rotateY(10deg); }
-    100% { transform: translateY(2px) rotate(-3deg) rotateY(-5deg); }
-}
-
-/* Animación Cinemática de Inserción y Desbloqueo de Cerradura */
-.floating-key-wrapper.unlocking {
-    animation: keyInsertCinematic 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes keyInsertCinematic {
-    0% {
-        transform: translateY(0) scale(1) rotate(0deg);
-        opacity: 1;
-    }
-    40% {
-        transform: translateY(115px) scale(0.75) rotate(0deg);
-        opacity: 1;
-        filter: drop-shadow(0 0 30px rgba(240, 217, 166, 0.9));
-    }
-    70% {
-        transform: translateY(115px) scale(0.68) rotate(90deg);
-        opacity: 0.95;
-    }
-    100% {
-        transform: translateY(115px) scale(0.1) rotate(90deg);
-        opacity: 0;
-    }
-}
-
-/* Cajón de Cristal y Luz Interna */
+/* Cajón / Cofre de Cristal y Luz Interna */
 .chest-container {
     position: relative;
     width: min(100%, 480px);
     height: 220px;
     border-radius: 28px;
     background: linear-gradient(145deg, rgba(56, 38, 54, 0.92), rgba(18, 14, 22, 0.97));
-    border: 1px solid rgba(232, 193, 212, 0.32);
+    border: 1px solid rgba(232, 193, 212, 0.35);
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
@@ -153,24 +97,24 @@
 }
 
 .chest-lock {
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     background: rgba(232, 193, 212, 0.2);
     border: 2px solid var(--color-accent);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.4rem;
-    box-shadow: 0 0 25px rgba(232, 193, 212, 0.4);
+    font-size: 1.5rem;
+    box-shadow: 0 0 25px rgba(232, 193, 212, 0.45);
     transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.6s ease;
 }
 
 .chest-container.opened {
-    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.6),
-                0 0 60px rgba(240, 217, 166, 0.35),
-                inset 0 0 40px rgba(232, 193, 212, 0.25);
-    border-color: rgba(240, 217, 166, 0.5);
+    box-shadow: 0 35px 95px rgba(0, 0, 0, 0.65),
+                0 0 65px rgba(240, 217, 166, 0.4),
+                inset 0 0 45px rgba(232, 193, 212, 0.3);
+    border-color: rgba(240, 217, 166, 0.55);
 }
 
 .chest-container.opened .chest-lock {
@@ -178,7 +122,7 @@
     transform: scale(0.3) rotate(180deg);
 }
 
-/* 3. Sobre Elegante Mágico (Paso 3) */
+/* 3. Sobre Elegante (Paso 3) */
 .envelope-wrapper {
     position: absolute;
     top: 50%;
@@ -187,8 +131,8 @@
     width: 290px;
     height: 180px;
     background: linear-gradient(135deg, rgba(64, 44, 62, 0.96), rgba(26, 20, 29, 0.98));
-    border: 1px solid rgba(240, 217, 166, 0.45);
-    border-radius: 18px;
+    border: 1px solid rgba(240, 217, 166, 0.48);
+    border-radius: 20px;
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(232, 193, 212, 0.2);
     display: flex;
     flex-direction: column;
@@ -203,56 +147,76 @@
 .chest-container.opened .envelope-wrapper {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-    animation: envelopeFloat 3s ease-in-out 1s infinite alternate;
-}
-
-@keyframes envelopeFloat {
-    0% { transform: translate(-50%, -50%) translateY(0); }
-    100% { transform: translate(-50%, -50%) translateY(-6px); }
 }
 
 .envelope-seal {
-    font-size: 2.5rem;
-    filter: drop-shadow(0 6px 14px rgba(240, 217, 166, 0.5));
-    animation: sealGlow 2s ease-in-out infinite alternate;
+    font-size: 2.6rem;
+    filter: drop-shadow(0 6px 14px rgba(240, 217, 166, 0.55));
 }
 
-@keyframes sealGlow {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.08); }
-}
-
-/* 4. Tarjeta de la Carta Final (Paso 4) */
+/* 4. Tarjeta de la Carta Final (Manuscrito de Lujo - Paso 4) */
 .final-letter-card {
-    width: min(100%, 760px);
+    width: min(100%, 780px);
     margin: 2.5rem auto 0;
-    padding: clamp(2.2rem, 6.5vw, 4.5rem);
-    border-radius: 30px;
-    background: linear-gradient(145deg, rgba(42, 28, 41, 0.95), rgba(13, 11, 16, 0.98));
-    border: 1px solid rgba(232, 193, 212, 0.35);
-    box-shadow: 0 35px 110px rgba(0, 0, 0, 0.65), 0 0 50px rgba(232, 193, 212, 0.12);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    text-align: left;
+    padding: clamp(2.5rem, 7vw, 4.5rem) clamp(2rem, 6vw, 4rem);
+    border-radius: 32px;
+    background: linear-gradient(160deg, rgba(38, 25, 37, 0.97) 0%, rgba(13, 10, 16, 0.99) 100%);
+    border: 1px solid rgba(240, 217, 166, 0.38);
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75), 0 0 60px rgba(232, 193, 212, 0.15);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    text-align: left !important;
     cursor: pointer;
     user-select: text;
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.final-letter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #E8C1D4, #F0D9A6, #E8C1D4, transparent);
 }
 
 .final-letter-card:hover {
-    border-color: rgba(240, 217, 166, 0.55);
-    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7), 0 0 65px rgba(232, 193, 212, 0.18);
+    border-color: rgba(240, 217, 166, 0.6);
+    box-shadow: 0 45px 130px rgba(0, 0, 0, 0.8), 0 0 70px rgba(232, 193, 212, 0.22);
     transform: translateY(-2px);
 }
 
+/* Membrete / Sello Superior de la Carta */
+.letter-stamp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1.15rem;
+    border-radius: 30px;
+    background: rgba(240, 217, 166, 0.1);
+    border: 1px solid rgba(240, 217, 166, 0.3);
+    color: #F0D9A6;
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2.2rem;
+}
+
+/* Alineación y Diagramación Perfecta del Texto */
 .final-letter-content {
-    font-family: var(--font-body);
-    font-size: clamp(0.98rem, 2.8vw, 1.1rem);
-    line-height: 1.88;
-    color: rgba(245, 245, 247, 0.95);
+    font-family: var(--font-body), "Inter", -apple-system, sans-serif;
+    font-size: clamp(1.02rem, 2.6vw, 1.16rem);
+    line-height: 1.95;
+    color: rgba(248, 246, 250, 0.96);
+    text-align: left !important;
     white-space: pre-wrap;
     word-break: break-word;
     font-weight: 300;
+    letter-spacing: 0.016em;
 }
 
 /* Cursor de máquina de escribir parpadeante en tono rosado-dorado */
@@ -268,17 +232,34 @@
 }
 
 .final-letter-hint {
-    margin-top: 1.75rem;
-    font-size: 0.8rem;
+    margin-top: 2rem;
+    font-size: 0.82rem;
     color: var(--color-accent);
     text-align: center;
     letter-spacing: 0.06em;
     font-style: italic;
-    opacity: 0.8;
+    opacity: 0.82;
 }
 
 /* Responsivo para dispositivos móviles */
+@media (max-width: 640px) {
+    .final-letter-card {
+        padding: 2.2rem 1.5rem;
+        border-radius: 24px;
+    }
+
+    .final-letter-content {
+        font-size: 1rem;
+        line-height: 1.85;
+    }
+}
+
 @media (max-width: 480px) {
+    .private-card-container {
+        padding: 1.8rem 1.25rem;
+        border-radius: 24px;
+    }
+
     .secret-stage-container {
         gap: 1.5rem;
     }
@@ -293,6 +274,6 @@
     }
 
     .final-letter-card {
-        padding: 1.8rem 1.35rem;
+        padding: 1.75rem 1.2rem;
     }
 }
