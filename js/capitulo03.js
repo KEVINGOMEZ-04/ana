@@ -566,7 +566,7 @@ async function playFinalScene() {
   const finalImage = document.getElementById('final-image');
   const finalCopy = document.getElementById('final-copy');
   const finalText = document.getElementById('final-text');
-  const continueBtn = document.getElementById('btn-open-private-letter');
+  const continueBtn = document.getElementById('btn-to-chapter4') || document.getElementById('btn-open-private-letter');
 
   finalImage.src = CHAPTER3.final.image;
   finalImage.alt = 'Fotografía final de Karina';
@@ -582,11 +582,13 @@ async function playFinalScene() {
     pauseBetweenPhrases: 1500
   });
 
-  continueBtn.textContent = 'Ir al Capítulo IV ✨';
-  continueBtn.classList.add('visible');
-  continueBtn.onclick = () => {
-    import('./navigation.js').then(m => m.navigateTo('chapter4'));
-  };
+  if (continueBtn) {
+    continueBtn.textContent = 'Continuar al Capítulo IV ✨';
+    continueBtn.classList.add('visible');
+    continueBtn.onclick = () => {
+      import('./navigation.js').then(m => m.navigateTo('chapter4'));
+    };
+  }
 }
 
 function showSection(selector) {
