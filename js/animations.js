@@ -112,11 +112,16 @@ async function initializeTypewriterSound(id) {
     }
 }
 
-function playTypewriterTap(volume = 0.12, duration = 0.06) {
+function playTypewriterTap(volume = 0.7, duration = 0.1) {
     if (typewriterSoundState.initialized && typewriterSoundState.context && typewriterSoundState.buffer) {
         try {
+            if (typewriterSoundState.context.state === 'suspended') {
+                typewriterSoundState.context.resume().catch(() => {});
+            }
             const source = typewriterSoundState.context.createBufferSource();
             source.buffer = typewriterSoundState.buffer;
+            // Variación sutil de tono para teclas mecánicas reales
+            source.playbackRate.value = 0.95 + Math.random() * 0.1;
             const gain = typewriterSoundState.context.createGain();
             gain.gain.value = volume;
             source.connect(gain).connect(typewriterSoundState.context.destination);
@@ -131,24 +136,25 @@ function playTypewriterTap(volume = 0.12, duration = 0.06) {
         }
     }
 
-    const audio = document.getElementById(typewriterSoundState.id);
+    const audio = document.getElementById(typewriterSoundState.id || 'typing-effect');
     if (!audio) return;
 
-    const clone = audio.cloneNode(true);
-    clone.volume = volume;
-    clone.muted = false;
-    clone.currentTime = 0;
-    clone.preload = 'auto';
-    clone.playsInline = true;
-    clone.setAttribute('playsinline', '');
-    document.body.appendChild(clone);
-    clone.play().catch(() => {
-        clone.remove();
-    });
-    setTimeout(() => {
-        clone.pause();
-        clone.remove();
-    }, duration * 1000 + 20);
+    try {
+        const clone = audio.cloneNode(true);
+        clone.volume = volume;
+        clone.muted = false;
+        clone.currentTime = 0;
+        clone.preload = 'auto';
+        clone.playsInline = true;
+        clone.setAttribute('playsinline', '');
+        document.body.appendChild(clone);
+        const p = clone.play();
+        if (p) p.catch(() => {});
+        setTimeout(() => {
+            clone.pause();
+            clone.remove();
+        }, duration * 1000 + 40);
+    } catch (e) {}
 }
 
 export const playCinematicSequence = async (element, phrases, timings, onComplete) => {

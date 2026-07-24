@@ -1,0 +1,78 @@
+/* ==========================================================================
+   safari-hybrid.css — Optimización Híbrida WebKit / Safari & Google Chrome
+   Preserva 100% el diseño visual, animaciones y estética existente.
+   ========================================================================== */
+
+/* 1. Aceleración por Hardware (GPU) para evitar tartamudeo (stutter) en WebKit/Safari */
+html, body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* 2. Solución para el bug de 'background-attachment: fixed' en iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    body {
+        background-attachment: scroll !important;
+    }
+    
+    /* Capa fija acelerada por GPU para emular background-attachment: fixed sin lag */
+    body::before {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        will-change: opacity, transform;
+    }
+}
+
+/* 3. Renderizado de Glassmorphism híbrido con soporte nativo -webkit-backdrop-filter */
+.glass,
+.chapter-card,
+.file-card,
+.dialog-wrap,
+.analysis-card,
+.modal-content,
+#song-widget {
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* 4. Optimización de animaciones y transiciones CSS para 60fps en WebKit y Blink */
+.fade-in,
+.fade-out,
+.scene-active,
+.chapter-container,
+.chapter-card,
+#music-btn,
+#song-widget {
+    will-change: opacity, transform;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+/* Keyframes con prefijos -webkit- para máxima compatibilidad histórica en Safari/iOS */
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; -webkit-transform: translate3d(0, 10px, 0); transform: translate3d(0, 10px, 0); }
+    to { opacity: 1; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+}
+
+@-webkit-keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@-webkit-keyframes sceneEnter {
+    from { opacity: 0; -webkit-transform: translate3d(0, 14px, 0); transform: translate3d(0, 14px, 0); }
+    to { opacity: 1; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
+}
+
+@-webkit-keyframes breathe {
+    0%, 100% { -webkit-box-shadow: 0 18px 54px rgba(0,0,0,.28); box-shadow: 0 18px 54px rgba(0,0,0,.28); }
+    50% { -webkit-box-shadow: 0 22px 66px rgba(69,38,61,.34); box-shadow: 0 22px 66px rgba(69,38,61,.34); }
+}

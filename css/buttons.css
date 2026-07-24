@@ -1,0 +1,127 @@
+/* ==========================================================================
+   buttons.css — Sistema Elegante de Botones General
+   Alineado 100% con la estética íntima, elegante y de alta gama del proyecto.
+   ========================================================================== */
+
+/* 1. Botón Principal (Primary & Continue) */
+.btn-primary,
+.btn-continue {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 36px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.98rem;
+    letter-spacing: 0.08em;
+    color: #150e16;
+    background: linear-gradient(135deg, rgba(245, 218, 230, 0.96) 0%, rgba(228, 178, 203, 0.92) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 40px;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    box-shadow: 0 12px 30px rgba(232, 193, 212, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.35s var(--motion-ease, cubic-bezier(.22, .8, .2, 1)),
+                box-shadow 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
+    will-change: transform, box-shadow;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+/* Efecto de resplandor interior y brillo al pasar el cursor */
+.btn-primary::before,
+.btn-continue::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-primary:hover::before,
+.btn-continue:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover,
+.btn-continue:hover {
+    -webkit-transform: translate3d(0, -3px, 0) scale(1.02);
+    transform: translate3d(0, -3px, 0) scale(1.02);
+    background: linear-gradient(135deg, rgba(255, 230, 240, 1) 0%, rgba(236, 190, 213, 0.98) 100%);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 18px 45px rgba(232, 193, 212, 0.42), 0 0 25px rgba(232, 193, 212, 0.2);
+}
+
+.btn-primary:active,
+.btn-continue:active {
+    -webkit-transform: translate3d(0, 0, 0) scale(0.98);
+    transform: translate3d(0, 0, 0) scale(0.98);
+    box-shadow: 0 8px 20px rgba(232, 193, 212, 0.3);
+}
+
+/* 2. Botón Secundario y Enlaces de Texto */
+.text-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 28px;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: rgba(245, 245, 247, 0.88);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(232, 193, 212, 0.2);
+    border-radius: 40px;
+    cursor: pointer;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.text-link:hover {
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+    background: rgba(232, 193, 212, 0.14);
+    border-color: rgba(232, 193, 212, 0.45);
+    color: var(--color-accent);
+}
+
+.text-link:active {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+/* 3. Botón de Cierre (Cierre de modales) */
+.btn-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-text);
+    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(.22, .8, .2, 1), background 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-close:hover {
+    -webkit-transform: rotate(90deg) scale(1.08);
+    transform: rotate(90deg) scale(1.08);
+    background: rgba(232, 193, 212, 0.22);
+    border-color: rgba(232, 193, 212, 0.5);
+    color: var(--color-accent);
+}

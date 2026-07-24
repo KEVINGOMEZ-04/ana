@@ -2,6 +2,7 @@ import { CONFIG } from '../config.js';
 import { PRIVATE_LETTER } from '../data/privateLetter.js';
 import { normalizeAnswer } from './utils.js';
 import { crossfadeElements, playCinematicSequence } from './animations.js';
+import { navigateTo } from './navigation.js';
 
 const STORAGE_KEY = 'private-letter-revealed';
 
@@ -132,7 +133,9 @@ const setupPrivateLetter = () => {
       handleSubmit();
     }
   });
-  returnButton.addEventListener('click', closePrivateScreen);
+  returnButton.addEventListener('click', () => {
+    navigateTo('chapter4');
+  });
 };
 
 window.addEventListener('DOMContentLoaded', setupPrivateLetter);

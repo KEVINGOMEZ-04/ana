@@ -573,6 +573,7 @@ async function playFinalScene() {
   finalImage.classList.add('visible');
 
   await sleep(900);
+
   finalText.textContent = '';
   finalCopy.classList.add('visible');
 
@@ -581,7 +582,11 @@ async function playFinalScene() {
     pauseBetweenPhrases: 1500
   });
 
+  continueBtn.textContent = 'Ir al Capítulo IV ✨';
   continueBtn.classList.add('visible');
+  continueBtn.onclick = () => {
+    import('./navigation.js').then(m => m.navigateTo('chapter4'));
+  };
 }
 
 function showSection(selector) {
@@ -597,19 +602,23 @@ async function playIntroSequence() {
 
   if (!transitionSection || !transitionText) return;
 
-  transitionSection.classList.remove('hidden');
+  transitionSection.classList.remove('hidden', 'dissolve');
   transitionText.textContent = '';
   transitionText.classList.add('visible');
-  transitionText.style.opacity = '1';
 
-await playCinematicSequence(transitionText, CHAPTER3.introLines, {
-  typewriterSpeed: 54,
-  pauseBetweenPhrases: 1400,
-  soundId: 'typing-effect',
-  soundVolume: 0.16
-});
+  await playCinematicSequence(transitionText, CHAPTER3.introLines, {
+    typewriterSpeed: 54,
+    pauseBetweenPhrases: 1400,
+    soundId: 'typing-effect',
+    soundVolume: 0.75
+  });
 
-  await sleep(400);
+  await sleep(650);
+
+  // Transición inmersiva con desenfoque cinematográfico y zoom de lente
+  transitionSection.classList.add('dissolve');
+  
+  await sleep(1450);
   transitionText.classList.remove('visible');
   transitionSection.classList.add('hidden');
 }

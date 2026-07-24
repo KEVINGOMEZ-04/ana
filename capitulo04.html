@@ -2,25 +2,29 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Capítulo 4</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/global.css">
   <link rel="stylesheet" href="./css/animations.css">
   <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="./css/safari-hybrid.css">
+  <link rel="stylesheet" href="./css/ios-responsive.css">
+  <link rel="stylesheet" href="./css/chapter04.css">
+  <link rel="stylesheet" href="./css/buttons.css">
+  <link rel="stylesheet" href="./css/finalLetter.css">
+  <script type="module" src="./js/safariOptimizer.js"></script>
 </head>
-<body>
-  <main class="fade-in chapter-container" id="chapter4-root">
-    <section class="chapter-card">
-      <span class="chapter-index">Capítulo 04 · Próximamente</span>
-      <h1 class="elegant-title">Todavía falta algo</h1>
-      <p class="body-text">Algunas partes de esta historia merecen ser reveladas con calma.</p>
-      <div class="chapter-actions">
-        <button onclick="import('./js/navigation.js').then(m=>m.navigateTo('ending'))" class="btn-primary">Final</button>
-        <button onclick="import('./js/navigation.js').then(m=>m.navigateTo('intro'))" class="text-link">Volver al inicio</button>
-      </div>
-    </section>
+<body class="chapter-container">
+  <audio id="typing-effect" preload="auto" playsinline webkit-playsinline>
+    <source src="./assets/music/efect.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+  <main id="chapter4-root" style="width: 100%;">
+    <!-- El contenido del Capítulo 4 se inyecta dinámicamente desde js/capitulo04.js -->
   </main>
   <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/capitulo04.js"></script>
+  <script type="module" src="./js/finalLetter.js"></script>
 </body>
 </html>

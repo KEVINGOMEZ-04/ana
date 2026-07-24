@@ -1,0 +1,113 @@
+/* ==========================================================================
+   ios-responsive.css — Adaptabilidad Completa iOS / iPhone & Safe Area Insets
+   Ajusta la experiencia para todos los modelos de iPhone (Notch, Dynamic Island)
+   y dispositivos móviles sin alterar la estética ni romper layouts de Chrome/Desktop.
+   ========================================================================== */
+
+/* 1. Definición de Alturas de Pantalla Híbridas para iOS Safari (Evita saltos por barra de navegación) */
+:root {
+    --sat: env(safe-area-inset-top, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --app-height: 100vh;
+}
+
+@supports (height: 100dvh) {
+    :root {
+        --app-height: 100dvh;
+    }
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: var(--app-height);
+    padding-top: var(--sat);
+    padding-bottom: var(--sab);
+    padding-left: var(--sal);
+    padding-right: var(--sar);
+}
+
+.chapter-container,
+.countdown-wrapper,
+.cinematic-screen {
+    min-height: var(--app-height);
+}
+
+/* 2. Prevención de Zoom Automático en Inputs de iOS Safari (Requiere min font-size 16px en focus/mobile) */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px !important; /* Previene zoom forzado en iOS WebKit */
+    }
+}
+
+/* 3. Posicionamiento seguro de widgets flotantes contemplando el indicador gestual de iOS */
+#music-btn {
+    left: max(20px, var(--sal) + 12px);
+    bottom: max(24px, var(--sab) + 16px);
+}
+
+#song-widget {
+    left: max(16px, var(--sal) + 8px);
+    bottom: max(16px, var(--sab) + 8px);
+}
+
+@media (max-width: 640px) {
+    #song-widget {
+        left: max(12px, var(--sal) + 4px);
+        bottom: max(12px, var(--sab) + 4px);
+    }
+    
+    #song-widget.open {
+        bottom: max(16px, var(--sab) + 12px);
+    }
+}
+
+/* 4. Adaptabilidad Fina para Pantallas de iPhone Pequeñas y Medianas */
+
+/* iPhone SE y pantallas angostas (hasta 375px) */
+@media (max-width: 375px) {
+    .chapter-card {
+        padding: 1.5rem 1.2rem;
+        border-radius: 20px;
+    }
+    
+    .countdown-grid {
+        gap: 0.25rem;
+    }
+
+    .time-number {
+        font-size: 1.8rem;
+    }
+
+    .time-label {
+        font-size: 0.5rem;
+    }
+
+    .modal-content {
+        padding: 2.2rem 1.2rem;
+        border-radius: 20px;
+    }
+
+    .btn-primary,
+    .btn-continue {
+        padding: 0.8rem 1.4rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* iPhones Estándar y Pro Max (390px - 430px) */
+@media (min-width: 376px) and (max-width: 430px) {
+    .chapter-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .modal-content {
+        padding: 2.5rem 1.5rem;
+    }
+}
