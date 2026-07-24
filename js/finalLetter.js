@@ -1,12 +1,14 @@
 /**
  * finalLetter.js — Experiencia Cinemática con GSAP & Canvas-Confetti
- * Animación de precisión con física de resorte, partículas mágicas y línea de tiempo profesional.
+ * Compatible 100% con GitHub Pages, Servidores Fijos y Vite.
  */
 
 import { FINAL_LETTER_DATA } from '../data/finalLetter.js';
 import { navigateTo } from './navigation.js';
-import { gsap } from 'gsap';
-import confetti from 'canvas-confetti';
+
+// Resolución segura de librerías de animación globales o de ventana (evita errores en GitHub Pages)
+const getGSAP = () => window.gsap || null;
+const getConfetti = () => window.confetti || null;
 
 // Normalización flexible de texto (ignora mayúsculas, tildes, signos y espacios extras)
 const normalizeText = (text) => {
@@ -27,17 +29,22 @@ const validateAnswer = (input) => {
 
 // Explosión de partículas mágicas en dorado y rosa
 const triggerMagicalParticles = (originX = 0.5, originY = 0.5) => {
-  confetti({
-    particleCount: 45,
-    spread: 70,
-    origin: { x: originX, y: originY },
-    colors: ['#E8C1D4', '#F0D9A6', '#F5DAE6', '#FFFFFF'],
-    shapes: ['circle', 'star'],
-    scalar: 0.9,
-    ticks: 200,
-    gravity: 0.6,
-    drift: 0
-  });
+  const confettiFn = getConfetti();
+  if (confettiFn) {
+    try {
+      confettiFn({
+        particleCount: 45,
+        spread: 70,
+        origin: { x: originX, y: originY },
+        colors: ['#E8C1D4', '#F0D9A6', '#F5DAE6', '#FFFFFF'],
+        shapes: ['circle', 'star'],
+        scalar: 0.9,
+        ticks: 200,
+        gravity: 0.6,
+        drift: 0
+      });
+    } catch (e) {}
+  }
 };
 
 export const initFinalLetterExperience = () => {
@@ -51,7 +58,7 @@ export const initFinalLetterExperience = () => {
   // Inyectar HTML para la etapa de la llave, cajón y carta si no existen
   if (!document.getElementById('final-stage-wrapper')) {
     const stageHTML = `
-      <!-- Paso 2 y 3: Etapa Cinemática GSAP -->
+      <!-- Paso 2 y 3: Etapa Cinemática -->
       <div id="final-stage-wrapper" class="secret-stage-container hidden">
         <div id="floating-key" class="floating-key-wrapper">
           <svg class="key-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -130,16 +137,15 @@ export const initFinalLetterExperience = () => {
       // Lanzar minichequeo de destellos
       triggerMagicalParticles(0.5, 0.4);
 
-      gsap.to(privateScreen, {
-        opacity: 0,
-        y: -20,
-        duration: 0.6,
-        ease: "power2.inOut",
-        onComplete: () => {
+      if (privateScreen) {
+        privateScreen.classList.add('fade-out');
+        setTimeout(() => {
           privateScreen.classList.add('hidden');
-          runGSAPKeyTimeline();
-        }
-      });
+          runKeyTimeline();
+        }, 500);
+      } else {
+        runKeyTimeline();
+      }
     } else {
       const randomFailure = FINAL_LETTER_DATA.failureMessages[
         Math.floor(Math.random() * FINAL_LETTER_DATA.failureMessages.length)
@@ -149,13 +155,20 @@ export const initFinalLetterExperience = () => {
         feedbackText.style.color = "rgba(245, 245, 247, 0.75)";
       }
 
-      gsap.to(answerInput, {
-        x: 10,
-        duration: 0.08,
-        yoyo: true,
-        repeat: 5,
-        ease: "power1.inOut"
-      });
+      const gsapObj = getGSAP();
+      if (gsapObj) {
+        gsapObj.to(answerInput, {
+          x: 10,
+          duration: 0.08,
+          yoyo: true,
+          repeat: 5,
+          ease: "power1.inOut"
+        });
+      } else {
+        answerInput.style.transform = "translateX(-8px)";
+        setTimeout(() => answerInput.style.transform = "translateX(8px)", 100);
+        setTimeout(() => answerInput.style.transform = "translateX(0)", 200);
+      }
     }
   };
 
@@ -164,69 +177,75 @@ export const initFinalLetterExperience = () => {
     if (e.key === 'Enter') handleSubmission();
   });
 
-  // Línea de tiempo cinematográfica con GSAP para la Llave y el Cajón
-  const runGSAPKeyTimeline = () => {
+  // Línea de tiempo para la Llave y el Cajón
+  const runKeyTimeline = () => {
     stageWrapper.classList.remove('hidden');
     stageWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    const tl = gsap.timeline();
-
-    // 1. Revelación tridimensional de la llave con destellos
-    tl.fromTo(floatingKey, 
-      { opacity: 0, scale: 0.2, y: -40, rotateY: -180 }, 
-      { opacity: 1, scale: 1, y: 0, rotateY: 0, duration: 1.2, ease: "back.out(1.8)" }
-    )
-    .add(() => {
-      triggerMagicalParticles(0.5, 0.35);
-    })
-    
-    // 2. Flotación suave antes del descenso
-    .to(floatingKey, { y: -8, duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut" })
-    
-    // 3. Descenso preciso hacia el cerrojo
-    .to(floatingKey, { y: 110, scale: 0.85, duration: 1.0, ease: "power2.inOut" })
-    
-    // 4. Giro elástico de la llave en la cerradura
-    .to(floatingKey, { rotate: 90, scale: 0.75, duration: 0.7, ease: "elastic.out(1.2, 0.5)" })
-    
-    // 5. Desvanecimiento de la llave e iluminación del cofre
-    .to(floatingKey, { opacity: 0, scale: 0.1, duration: 0.35, ease: "power2.in" })
-    .to(chestLock, { scale: 0.2, opacity: 0, duration: 0.4, ease: "power2.in" }, "-=0.2")
-    .add(() => {
-      chestBox.classList.add('opened');
-      triggerMagicalParticles(0.5, 0.6);
-    })
-    
-    // 6. Emergencia del Sobre Mágico
-    .fromTo(envelopeBox, 
-      { opacity: 0, scale: 0.6, y: 30 }, 
-      { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: "back.out(1.6)" }
-    )
-    .to(envelopeSeal, { scale: 1.15, duration: 0.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    const gsapObj = getGSAP();
+    if (gsapObj) {
+      const tl = gsapObj.timeline();
+      tl.fromTo(floatingKey, 
+        { opacity: 0, scale: 0.2, y: -40, rotateY: -180 }, 
+        { opacity: 1, scale: 1, y: 0, rotateY: 0, duration: 1.2, ease: "back.out(1.8)" }
+      )
+      .add(() => triggerMagicalParticles(0.5, 0.35))
+      .to(floatingKey, { y: -8, duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut" })
+      .to(floatingKey, { y: 110, scale: 0.85, duration: 1.0, ease: "power2.inOut" })
+      .to(floatingKey, { rotate: 90, scale: 0.75, duration: 0.7, ease: "elastic.out(1.2, 0.5)" })
+      .to(floatingKey, { opacity: 0, scale: 0.1, duration: 0.35, ease: "power2.in" })
+      .to(chestLock, { scale: 0.2, opacity: 0, duration: 0.4, ease: "power2.in" }, "-=0.2")
+      .add(() => {
+        chestBox.classList.add('opened');
+        triggerMagicalParticles(0.5, 0.6);
+      })
+      .fromTo(envelopeBox, 
+        { opacity: 0, scale: 0.6, y: 30 }, 
+        { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: "back.out(1.6)" }
+      );
+    } else {
+      // Fallback CSS puro si no hay red para CDN de GSAP
+      floatingKey.classList.add('visible');
+      setTimeout(() => floatingKey.classList.add('unlocking'), 2200);
+      setTimeout(() => chestBox.classList.add('opened'), 3800);
+    }
   };
 
   // Apertura del Sobre y Despliegue de la Carta
   openLetterBtn.addEventListener('click', () => {
-    gsap.to(stageWrapper, {
-      opacity: 0,
-      scale: 0.95,
-      duration: 0.6,
-      ease: "power2.inOut",
-      onComplete: () => {
-        stageWrapper.classList.add('hidden');
-        letterContainer.classList.remove('hidden');
-        
-        gsap.fromTo(letterContainer, 
-          { opacity: 0, y: 40, scale: 0.96 }, 
-          { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }
-        );
-
-        letterContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        triggerMagicalParticles(0.5, 0.2);
-        startTypewriterAnimation();
-      }
-    });
+    const gsapObj = getGSAP();
+    if (gsapObj) {
+      gsapObj.to(stageWrapper, {
+        opacity: 0,
+        scale: 0.95,
+        duration: 0.6,
+        ease: "power2.inOut",
+        onComplete: () => revealLetterScreen()
+      });
+    } else {
+      stageWrapper.classList.add('fade-out');
+      setTimeout(() => revealLetterScreen(), 600);
+    }
   });
+
+  const revealLetterScreen = () => {
+    stageWrapper.classList.add('hidden');
+    letterContainer.classList.remove('hidden');
+    
+    const gsapObj = getGSAP();
+    if (gsapObj) {
+      gsapObj.fromTo(letterContainer, 
+        { opacity: 0, y: 40, scale: 0.96 }, 
+        { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }
+      );
+    } else {
+      letterContainer.classList.add('fade-in');
+    }
+
+    letterContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    triggerMagicalParticles(0.5, 0.2);
+    startTypewriterAnimation();
+  };
 
   // Animación Máquina de Escribir (Respetando saltos de línea exactos)
   const startTypewriterAnimation = () => {
